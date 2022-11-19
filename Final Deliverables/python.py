@@ -53,8 +53,7 @@ while True:
     deviceCli.commandCallback = mycommandCallback
 # Disconnect
 deviceCli.disconnect()
-
-// Sprint 3:  For Reference
+# Sprint 3:  For Reference
 import time
 import sys
 import ibmiotf.application # to install pip install ibmiotf
@@ -122,7 +121,7 @@ while True:
 # Disconnect the device and application from the cloud
 deviceCli.disconnect()
 
-// Code For Temperature
+# Code For Temperature
 from random import * 
 from random import * 
 while True: 
@@ -132,4 +131,87 @@ while True:
         print("Alarm") 
     else: 
         print("No Alarm")
+#----------------------------------------------------------------------------------------------------------------------------------------------------
+import random as rand
+print("WELCOME SMART FARMER")
+temperature = float(rand.uniform(15, 50))
+if temperature > 22 and temperature < 40:
+    humidity = int(rand.randint(45, 65))
+elif temperature < 22:
+    humidity = int(rand.randint(60, 70))
+elif temperature > 40:
+    humidity = int(rand.randint(25, 35))
+moisture = int(rand.randint(00, 70))
+print(
+    "temperature:",
+    temperature,
+    "C",
+    "\n",
+    "humidity:",
+    humidity,
+    "\n",
+    "moisture:",
+    moisture,
+)
+if temperature > 35 or moisture < 20:
+    print("Irrigation required")
+    print("Activate irrigation ?")
+    decision = input()
+    if decision == "yes":
+        print("Irrigation activated")
+    else:
+        print("Irrigation not activated")
+else:
+    print("Irrigation not required")
+
+# Sprint 4:  For Reference
+
+import ibmiotf.application
+import ibmiotf.device 
+import random
+
+#Provide your IBM Watson Device Credentials
+organization = "jztdcw"
+deviceType = "NodeMCU"
+deviceId = " node-mcu-4321 "
+authMethod = "use-token-auth"
+authToken = "987654321"
+
+# Initialize GPIO
+def myCommandCallback(cmd): 
+    print("Command received: %s" % cmd.data['command'])
+    status=cmd.data['command'] 
+    if status=="motoron": 
+        print ("motor is on") 
+    elif status == "motoroff": 
+        print ("motor is off") 
+    else:
+        print ("please send proper command")
+
+try:
+    deviceOptions = {"org": organization, "type": deviceType, "id": deviceId,"auth-method": authMethod, "auth-token": authToken}
+    deviceCli = ibmiotf.device.Client(deviceOptions)
+
+except Exception as e:
+    print("Caught exception connecting device: %s" % str(e))
+    sys.exit()
+# Connect and send a datapoint "hello" with value "world" into the cloud as an event of type "greeting" 10 times deviceCli.connect()
+
+while True:
+    #Get Sensor Data from DHT11
+    temp=random.randint(90,110)
+    Humid=random.randint(60,100)
+    Mois=random. Randint(20,120)
+    data = { 'temp' : temp, 'Humid': Humid , 'Mois': Mois}
+     #print data def
+    myOnPublishCallback():
+        print ("Published Temperature = %s C" % temp, "Humidity = %s %%" % Humid, “Moisture =%s deg c” % Mois “to IBM Watson")
+        success = deviceCli.publishEvent("IoTSensor", "json", data, qos=0,on_publish=myOnPublishCallback) 
+        if not success:
+            print("Not connected to IoTF")
+     time.sleep(10)
+    deviceCli.commandCallback = myCommandCallback 
+#Disconnect the device and application from the cloud
+deviceCli.disconnect()
+
 
